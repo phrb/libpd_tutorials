@@ -19,8 +19,14 @@
 #include "m_imp.h"
 #include "g_all_guis.h"
 
+/* Why is pd_init prototyped here? Where is its definition? */
 void pd_init(void);
 
+/* 
+ * Why are those hooks initialized out of libpd_init? 
+ * Why are thy initialized at all?
+ *
+ */
 t_libpd_printhook libpd_printhook = NULL;
 t_libpd_banghook libpd_banghook = NULL;
 t_libpd_floathook libpd_floathook = NULL;
@@ -48,6 +54,9 @@ static void *get_object(const char *s) {
 void libpd_init(void) {
   signal(SIGFPE, SIG_IGN);
   libpd_start_message(32); // allocate array for message assembly
+  /* DEBUG: Printing lipd_printhook location in memory. */
+  printf ( "libpd.so: libpd_printhook located at %p\n", &libpd_printhook );
+  /* DEBUG END */
   sys_printhook = (t_printhook) libpd_printhook;
   sys_soundin = NULL;
   sys_soundout = NULL;
@@ -252,7 +261,12 @@ int libpd_bang(const char *recv) {
   pd_bang(obj);
   return 0;
 }
-
+/* 
+ * Begining of added functions, to solve the 
+ * hooks being in different parts of program
+ * memory.
+ *
+ */
 void libpd_set_printhook ( const t_libpd_printhook hook )
 {
     libpd_printhook = hook;
@@ -277,7 +291,7 @@ void libpd_set_messagehook ( const t_libpd_messagehook hook )
 {
     libpd_messagehook = hook;
 }
-
+/* End of added functions. */
 int libpd_blocksize(void) {
   return DEFDACBLKSIZE;
 }
