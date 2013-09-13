@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include "z_libpd.c"
 #include "z_libpd.h"
 
 /*
@@ -63,7 +64,7 @@ int main(int argc, char **argv) {
     libpd_set_printhook ( (t_libpd_printhook) pdprint );
     libpd_set_floathook ( (t_libpd_floathook) pdfloat );
     libpd_set_banghook ( (t_libpd_banghook) pdbang );
-    libpd_set_messagehook ( (t_libpd_messagehook) pdmessage );
+    libpd_set_messagehook ( (t_libpd_messagehook) pdmessage ); 
     /* 
      * These function calls set up libpd and Pd. 
      * In this example, pd will open with one input

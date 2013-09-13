@@ -42,6 +42,11 @@ endif
 
 PDNATIVE_SOLIB_EXT ?= $(SOLIB_EXT)
 
+#
+#	Added hook utils.
+#	They are not added as
+#	default for some reason.
+#
 PD_FILES = \
 	../pure-data/src/d_arithmetic.c ../pure-data/src/d_array.c ../pure-data/src/d_ctl.c \
 	../pure-data/src/d_dac.c ../pure-data/src/d_delay.c ../pure-data/src/d_fft.c \
@@ -68,8 +73,13 @@ PD_FILES = \
 	../pure-data/src/x_gui.c ../pure-data/src/x_interface.c ../pure-data/src/x_list.c \
 	../pure-data/src/x_midi.c ../pure-data/src/x_misc.c ../pure-data/src/x_net.c \
 	../pure-data/src/x_qlist.c ../pure-data/src/x_time.c \
-	libpd_wrapper/s_libpdmidi.c libpd_wrapper/x_libpdreceive.c \
-	libpd_wrapper/z_libpd.c 
+	libpd_wrapper/s_libpdmidi.c \
+	libpd_wrapper/x_libpdreceive.c \
+	libpd_wrapper/z_libpd.c \
+	libpd_wrapper/util/z_hook_util.c \
+	libpd_wrapper/util/z_print_util.c \
+	libpd_wrapper/util/ringbuffer.c \
+	libpd_wrapper/util/z_queued.c
 
 PDJAVA_JAR_CLASSES = \
 	java/org/puredata/core/PdBase.java \
@@ -95,7 +105,7 @@ PDJAVA_DIR = $(PDJAVA_BUILD)/org/puredata/core/natives/$(PDNATIVE_PLATFORM)/$(PD
 PDJAVA_NATIVE = $(PDJAVA_DIR)/$(SOLIB_PREFIX)pdnative.$(PDNATIVE_SOLIB_EXT)
 PDJAVA_JAR = libs/libpd.jar
 
-CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I../pure-data/src \
+CFLAGS = -DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -I./../pure-data/src \
          -I./libpd_wrapper -I./libpd_wrapper/util $(PLATFORM_CFLAGS)
 
 .PHONY: libpd csharplib javalib clean clobber

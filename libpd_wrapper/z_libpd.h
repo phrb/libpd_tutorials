@@ -85,14 +85,13 @@ EXTERN t_libpd_messagehook libpd_messagehook;
  * hooks defined by the .so library stay in different
  * parts of process memory.
  *
- */
 EXTERN void libpd_set_printhook(const t_libpd_printhook hook);
 EXTERN void libpd_set_banghook(const t_libpd_banghook hook);
 EXTERN void libpd_set_floathook(const t_libpd_floathook hook);
 EXTERN void libpd_set_symbolhook(const t_libpd_symbolhook hook);
 EXTERN void libpd_set_listhook(const t_libpd_listhook hook);
 EXTERN void libpd_set_messagehook(const t_libpd_messagehook hook);
-/* End of defined functions. */
+ End of defined functions. */
 
 EXTERN int libpd_noteon(int channel, int pitch, int velocity);
 EXTERN int libpd_controlchange(int channel, int controller, int value);

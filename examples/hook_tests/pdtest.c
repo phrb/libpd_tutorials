@@ -27,9 +27,9 @@ void pdprint ( const char * s )
 }
 int main(int argc, char **argv)
 {
-    printf ( "pdtest.c: libpd_printhook located at %p\n", &libpd_printhook );
     /* Setting hook with patch functions. */
-    libpd_set_printhook ( (t_libpd_printhook) pdprint );
+    libpd_set_printhook ( (t_libpd_printhook) &pdprint );
+    printf ( "pdtest.c: libpd_printhook located at %p\n", libpd_printhook );
     /* 
      * The following function call will set up the pd hooks with our
      * function set at libpd_printhook, and print libpd_printhook
