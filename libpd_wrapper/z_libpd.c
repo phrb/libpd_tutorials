@@ -49,9 +49,9 @@ static void *get_object(const char *s) {
 void libpd_init(void) {
   signal(SIGFPE, SIG_IGN);
   libpd_start_message(32); // allocate array for message assembly
-  /* DEBUG: Printing lipd_printhook location in memory. */
-  printf ( "libpd.so: libpd_printhook located at %p\n", libpd_printhook );
-  /* DEBUG END */
+  /* DEBUG: Printing lipd_printhook location in memory. 
+  * printf ( "libpd.so: libpd_printhook located at %p\n", libpd_printhook );
+  DEBUG END */
   sys_printhook = (t_printhook) libpd_printhook;
   sys_soundin = NULL;
   sys_soundout = NULL;
