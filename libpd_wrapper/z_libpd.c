@@ -50,6 +50,7 @@ void libpd_init(void) {
   signal(SIGFPE, SIG_IGN);
   libpd_start_message(32); // allocate array for message assembly
   /* DEBUG: Printing lipd_printhook location in memory. 
+   * Trying to understand different hooks being set.
   * printf ( "libpd.so: libpd_printhook located at %p\n", libpd_printhook );
   DEBUG END */
   sys_printhook = (t_printhook) libpd_printhook;
@@ -256,36 +257,6 @@ int libpd_bang(const char *recv) {
   pd_bang(obj);
   return 0;
 }
-/* 
- * Begining of added functions, to solve the 
- * hooks being in different parts of program
- * memory.
- *
-void libpd_set_printhook ( const t_libpd_printhook hook )
-{
-    libpd_printhook = hook;
-}
-void libpd_set_banghook ( const t_libpd_banghook hook )
-{
-    libpd_banghook = hook;
-}
-void libpd_set_floathook ( const t_libpd_floathook hook )
-{
-    libpd_floathook = hook;
-}
-void libpd_set_symbolhook ( const t_libpd_symbolhook hook )
-{
-    libpd_symbolhook = hook;
-}
-void libpd_set_listhook ( const t_libpd_listhook hook )
-{
-    libpd_listhook = hook;
-}
-void libpd_set_messagehook ( const t_libpd_messagehook hook )
-{
-    libpd_messagehook = hook;
-}
-End of added functions. */
 int libpd_blocksize(void) {
   return DEFDACBLKSIZE;
 }

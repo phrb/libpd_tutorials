@@ -43,8 +43,8 @@ endif
 PDNATIVE_SOLIB_EXT ?= $(SOLIB_EXT)
 
 #
-#	Added hook utils.
-#	They are not added as
+#	Added hook utils (z_hook_util.c)
+#	It is not added as
 #	default for some reason.
 #
 PD_FILES = \
