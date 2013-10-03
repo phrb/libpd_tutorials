@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "z_libpd.c"
-#include "z_libpd.h"
+#include "../libpd_wrapper/z_libpd.c"
+#include "../libpd_wrapper/z_libpd.h"
 
 /*
  * This is a simple test written for libpd functionalities.
@@ -14,7 +14,7 @@
  */
 void pdprint ( const char * s ) 
 {
-  printf ( "%s\n", s );
+    printf ( "%s\n", s );
 }
 void pdfloat ( const char * recv, float x )
 {
@@ -43,6 +43,7 @@ int main(int argc, char **argv) {
     const char * BANG_TARGET            = "send_bang";
     const char * MESSAGE_TARGET         = "send_message_bang";
     const char * FLOAT_TARGET           = "send_float";
+    const char * SWITCH_TARGET          = "send_switch";
     const char * HELLO_WORLD_TARGET     = "ask_hello_world";
     const char * MESSAGE_BINDING_TARGET = "message_test";
     const char * BANG_BINDING_TARGET    = "bang_test";
@@ -54,18 +55,15 @@ int main(int argc, char **argv) {
     int pd_ticks = ( real_seconds * srate ) / block_size;
     int i = 0;
     void * patch;
-    /* 
-     * z_libpd.h  was modified to include this set of functions,
-     * since simply setting the hooks wasn't working.
-     * There certainly is a better way to do it, but such way
-     * is yet undiscovered by me.
+    /*
+     * Bindings for the callback functions.
      *
      */
     libpd_set_printhook ( (t_libpd_printhook) pdprint );
     libpd_set_floathook ( (t_libpd_floathook) pdfloat );
     libpd_set_banghook ( (t_libpd_banghook) pdbang );
     libpd_set_messagehook ( (t_libpd_messagehook) pdmessage ); 
-    /* 
+    /*
      * These function calls set up libpd and Pd. 
      * In this example, pd will open with one input
      * channel, and two output channels.
@@ -102,6 +100,7 @@ int main(int argc, char **argv) {
      * to each binded target.
      *
      */
+    libpd_bang ( SWITCH_TARGET );
     libpd_bang ( HELLO_WORLD_TARGET );
     libpd_bang ( BANG_TARGET );
     libpd_bang ( MESSAGE_TARGET );

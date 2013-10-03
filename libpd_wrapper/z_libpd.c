@@ -19,7 +19,6 @@
 #include "m_imp.h"
 #include "g_all_guis.h"
 
-/* Why is pd_init prototyped here? Where is its definition? */
 void pd_init(void);
 
 t_libpd_printhook libpd_printhook = NULL;
@@ -49,10 +48,7 @@ static void *get_object(const char *s) {
 void libpd_init(void) {
   signal(SIGFPE, SIG_IGN);
   libpd_start_message(32); // allocate array for message assembly
-  /* DEBUG: Printing lipd_printhook location in memory. 
-   * Trying to understand different hooks being set.
-  * printf ( "libpd.so: libpd_printhook located at %p\n", libpd_printhook );
-  DEBUG END */
+  //printf ( "%p\n", &libpd_printhook );
   sys_printhook = (t_printhook) libpd_printhook;
   sys_soundin = NULL;
   sys_soundout = NULL;
@@ -257,6 +253,7 @@ int libpd_bang(const char *recv) {
   pd_bang(obj);
   return 0;
 }
+
 int libpd_blocksize(void) {
   return DEFDACBLKSIZE;
 }

@@ -1,0 +1,8 @@
+# Ignoring Java Compiles and Packages#
+*.class
+*.so
+*.jar
+
+# Eclipse Files #
+.metadata
+.settings
