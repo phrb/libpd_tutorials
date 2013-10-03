@@ -1,0 +1,9 @@
+#N canvas 0 48 1920 1032 10;
+#X obj 528 374 print;
+#X msg 532 354 Hello World!;
+#X obj 530 331 r ask_hello_world;
+#X obj 649 333 r send_bang;
+#X obj 647 357 s receive_bang;
+#X connect 1 0 0 0;
+#X connect 2 0 1 0;
+#X connect 3 0 4 0;
