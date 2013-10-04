@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include "../libpd_wrapper/z_libpd.c"
 #include "../libpd_wrapper/z_libpd.h"
+/*#include "../libpd_wrapper/x_libpdreceive.h"*/
 
 /*
  * This is a simple test written for libpd functionalities.
@@ -51,12 +51,15 @@ int main(int argc, char **argv) {
     const int    FLOAT_VALUE            = 222;
     int srate = 44100;
     int block_size = 64;
-    int real_seconds = 3;
-    int pd_ticks = ( real_seconds * srate ) / block_size;
+    /* Arbitrary number of processing seconds. */
+    int real_pd_seconds = 8;
+    int pd_ticks = ( real_pd_seconds * srate ) / block_size;
     int i = 0;
     void * patch;
-    /*
-     * Bindings for the callback functions.
+    /* 
+     * Bindings for the written functions, that will
+     * be called by pd when targets receive
+     * bangs, numbers or messages.
      *
      */
     libpd_set_printhook ( (t_libpd_printhook) pdprint );
@@ -68,8 +71,13 @@ int main(int argc, char **argv) {
      * In this example, pd will open with one input
      * channel, and two output channels.
      *
+     * Note that you have to initialize a libpdreceiver
+     * in order to receive print messages from Pd,
+     * and other messages properly.
+     *
      */
     libpd_init ( );
+    libpdreceive_setup ( );
     libpd_init_audio ( 1, 2, srate );
     float inbuf[ 64 ], outbuf[ 128 ]; 
     /* Message to turn pd dsp on. */
@@ -83,12 +91,12 @@ int main(int argc, char **argv) {
      */
     patch = libpd_openfile( argv[ 1 ], argv[ 2 ] );
     /* 
-     * Bindings for the written functions, that will
-     * be called by pd when targets receive
-     * bangs, numbers or messages.
+     * Bindings for the symbols to wich
+     * we wish to be subscribed to.
      *
-     * Note that "print" messages from pd are subscribed to
-     * automatically.
+     * Pd will send us the information
+     * sent to those targets via our
+     * callback functions.
      *
      */
     libpd_bind ( BANG_BINDING_TARGET );
@@ -100,28 +108,24 @@ int main(int argc, char **argv) {
      * to each binded target.
      *
      */
-    libpd_bang ( SWITCH_TARGET );
     libpd_bang ( HELLO_WORLD_TARGET );
     libpd_bang ( BANG_TARGET );
     libpd_bang ( MESSAGE_TARGET );
     libpd_float ( FLOAT_TARGET, FLOAT_VALUE );
     /* 
-     * This single pd processing tick, makes sure
-     * pd will call the functions.
-     *
+     * A single Pd processing tick.
      */
-    libpd_process_raw ( inbuf, outbuf );
+   libpd_process_raw ( inbuf, outbuf );
     /*
      * In case you want pd to compute for a certain
-     * ammount of time, uncomment this for loop,
-     * and set the real_seconds int.
-
+     * ammount of time, uncomment this loop,
+     * and set the real_pd_seconds int.
+     *
     for ( i = 0; i < pd_ticks; i++ )
     {
         libpd_process_raw ( inbuf, outbuf );   
     }
-    
-    */
+     */
     libpd_closefile ( patch );
     return 0;
 }
