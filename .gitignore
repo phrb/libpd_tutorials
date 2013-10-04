@@ -6,3 +6,8 @@
 # Eclipse Files #
 .metadata
 .settings
+.classpath
+.project
+
+# Binaries #
+bin/
