@@ -79,7 +79,12 @@ int main(int argc, char **argv) {
     libpd_init ( );
     libpdreceive_setup ( );
     libpd_init_audio ( 1, 2, srate );
+    /* Buffer, to and from Pd. */
     float inbuf[ 64 ], outbuf[ 128 ]; 
+    for ( i = 0; i < 64; i++ )
+    {
+        inbuf[ i ] = 1;
+    }
     /* Message to turn pd dsp on. */
     libpd_start_message ( 1 ); 
     libpd_add_float ( 1.0f );
@@ -114,18 +119,23 @@ int main(int argc, char **argv) {
     libpd_float ( FLOAT_TARGET, FLOAT_VALUE );
     /* 
      * A single Pd processing tick.
-     */
-   libpd_process_raw ( inbuf, outbuf );
+     *
+   libpd_process_raw ( inbuf, outbuf );*/
     /*
      * In case you want pd to compute for a certain
      * ammount of time, uncomment this loop,
      * and set the real_pd_seconds int.
-     *
+     */
     for ( i = 0; i < pd_ticks; i++ )
     {
         libpd_process_raw ( inbuf, outbuf );   
     }
-     */
+    printf ( "out_buffer= [" );
+    for ( i = 0; i < 128; i++ )
+    {
+        printf ( " %d", outbuf[ i ] );
+    }
+    printf ( " ]\n" );  
     libpd_closefile ( patch );
     return 0;
 }
