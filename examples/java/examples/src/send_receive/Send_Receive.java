@@ -29,7 +29,7 @@ public class Send_Receive
 		float[ ] out_buffer = new float[ 768 ];
 		for (int i = 0; i < 256; i++) 
 		{
-			in_buffer[ i ] = 1;
+			in_buffer[ i ] = i;
 		}
 		init ( );
 		loadPatch ( "res/send_receive_test.pd", 0 );
@@ -38,7 +38,7 @@ public class Send_Receive
 		PdBase.sendBang ( "send_bang" );
 		PdBase.sendFloat ( "do_math", 2 );
 		PdBase.sendBang ( "ask_hello_world" );
-		PdBase.process ( 2, in_buffer, out_buffer );
+		PdBase.process ( 1, in_buffer, out_buffer );
 		PdBase.pollPdMessageQueue ( );
 		System.out.println( "Patch ID="+ patch_list[ 0 ] );
 		closePatch ( );

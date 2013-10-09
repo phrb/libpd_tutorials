@@ -8,7 +8,7 @@ CFLAGS = -I../../../../pure-data/src -I../../../libpd_wrapper -O3
 .PHONY: clean clobber
 
 $(TARGET): ${SRC_FILES:.c=.o} $(LIBPD)
-	gcc -o $(DIST_DIR)/$(TARGET) $^ 
+	gcc -Wall -O2 -pedantic -o $(DIST_DIR)/$(TARGET) $^ 
 
 $(LIBPD):
 	cd ../../../.. && make

@@ -1,13 +1,38 @@
-# Ignoring Java Compiles and Packages#
+# Swap and Stuff #
+*.~
+*.out
+*.swp
+# Ignoring Media files #
+*.wav
+*.png
+media/
+# Ignoring Java Compiles #
 *.class
-*.so
 *.jar
-
-# Eclipse Files #
-.metadata
-.settings
-.classpath
-.project
-
-# Binaries #
+*.so
 bin/
+# Package Files #
+#*.jar Needed for libs #
+#*.so                  #
+*.war
+*.ear
+# Ignoring Eclipse files #
+.metadata/
+.settings/
+.project
+.metadata
+tmp/
+*.tmp
+*.bak
+*~.nib
+local.properties
+.classpath
+.loadpath
+APDescription.txt
+COPYING
+logging.properties
+MTPs-Main-Container.txt
+# External tool builders
+.externalToolBuilders/
+# Ignoring Documentation #
+javadoc/

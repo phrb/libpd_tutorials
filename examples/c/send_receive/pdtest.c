@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "../libpd_wrapper/z_libpd.h"
-/*#include "../libpd_wrapper/x_libpdreceive.h"*/
 
 /*
  * This is a simple test written for libpd functionalities.
@@ -33,6 +32,30 @@ void pdmessage ( const char * source, const char * symbol, int argc, t_atom * ar
     printf ( "Number of Arguments=%d\n", argc );
     /* TODO t_atom management. */
 }
+void dump_buffers ( float * in, float * out )
+{
+    int i;
+    printf ( "in_buffer= [" );
+    for ( i = 0; i < 64; i++ )
+    {
+        printf ( " %f", in[ i ] );
+        if ( i % 4 == 0 )
+        {
+            printf ( "\n" );
+        }
+    }
+    printf ( " ]\n" );  
+    printf ( "out_buffer= [" );
+    for ( i = 0; i < 128; i++ )
+    {
+        printf ( " %f", out[ i ] );
+        if ( i % 4 == 0 )
+        {
+            printf ( "\n" );
+        }
+    }
+    printf ( " ]\n" );  
+}
 int main(int argc, char **argv) {
     if (argc < 3) 
     {
@@ -52,7 +75,7 @@ int main(int argc, char **argv) {
     int srate = 44100;
     int block_size = 64;
     /* Arbitrary number of processing seconds. */
-    int real_pd_seconds = 8;
+    int real_pd_seconds = 6;
     int pd_ticks = ( real_pd_seconds * srate ) / block_size;
     int i = 0;
     void * patch;
@@ -71,19 +94,17 @@ int main(int argc, char **argv) {
      * In this example, pd will open with one input
      * channel, and two output channels.
      *
-     * Note that you have to initialize a libpdreceiver
-     * in order to receive print messages from Pd,
-     * and other messages properly.
-     *
      */
     libpd_init ( );
-    libpdreceive_setup ( );
     libpd_init_audio ( 1, 2, srate );
     /* Buffer, to and from Pd. */
-    float inbuf[ 64 ], outbuf[ 128 ]; 
+    float * inbuf;
+    float * outbuf;
+    inbuf = malloc ( sizeof ( float ) * 64 );
+    outbuf = malloc ( sizeof ( float ) * 128 );
     for ( i = 0; i < 64; i++ )
-    {
-        inbuf[ i ] = 1;
+    {   
+        inbuf[ i ] = i;
     }
     /* Message to turn pd dsp on. */
     libpd_start_message ( 1 ); 
@@ -120,22 +141,28 @@ int main(int argc, char **argv) {
     /* 
      * A single Pd processing tick.
      *
-   libpd_process_raw ( inbuf, outbuf );*/
+     */
+   libpd_process_float ( 1, inbuf, outbuf );
+   /*
+    * Dumping buffers to stdout.
+    *
+    */
+   dump_buffers ( inbuf, outbuf );
     /*
      * In case you want pd to compute for a certain
      * ammount of time, uncomment this loop,
      * and set the real_pd_seconds int.
-     */
+     *
     for ( i = 0; i < pd_ticks; i++ )
     {
-        libpd_process_raw ( inbuf, outbuf );   
-    }
-    printf ( "out_buffer= [" );
-    for ( i = 0; i < 128; i++ )
-    {
-        printf ( " %d", outbuf[ i ] );
-    }
-    printf ( " ]\n" );  
+        libpd_process_float ( 1, inbuf, outbuf );
+         *
+         * A simple way to check buffer
+         * exchange: dumping to stdout!
+         *
+         *
+        dump_buffers ( inbuf, outbuf );
+    }*/
     libpd_closefile ( patch );
     return 0;
 }
