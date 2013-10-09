@@ -33,9 +33,11 @@ public class Send_Receive
 		}
 		init ( );
 		loadPatch ( "res/send_receive_test.pd", 0 );
-		PdBase.subscribe( "receive_bang" );
-		PdBase.sendBang( "receive_bang" );
-		PdBase.sendBang( "ask_hello_world" );
+		PdBase.subscribe ( "receive_bang" );
+		PdBase.subscribe ( "send_math" );
+		PdBase.sendBang ( "send_bang" );
+		PdBase.sendFloat ( "do_math", 2 );
+		PdBase.sendBang ( "ask_hello_world" );
 		PdBase.process ( 2, in_buffer, out_buffer );
 		PdBase.pollPdMessageQueue ( );
 		System.out.println( "Patch ID="+ patch_list[ 0 ] );
